@@ -11,7 +11,11 @@ import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Loginpage from "./screens/Loginpage";
 import Homepage from "./screens/Homepage";
-import Signup from './screens/Signup'
+import Signup from './screens/Signup';
+import AddReceipt from './screens/AddReceipt';
+import MyReceipt from './screens/MyReceipt';
+import Expenditure from 'screens/Expenditure';
+import About from './screens/About';
 // import firebase from 'react-native-firebase';
 // import firebase from '@firebase/app';
 // import '@firebase/database';
@@ -22,7 +26,11 @@ const RootStack = createStackNavigator(
   {
     Login: Loginpage,
     Home: Homepage,
-    Signup: Signup
+    Signup: Signup,
+    Add: AddReceipt,
+    Receipt: MyReceipt,
+    Expenditure: Expenditure,
+    About: About
   },
   {
     initialRouteName: 'Login'

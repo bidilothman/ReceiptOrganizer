@@ -6,18 +6,10 @@ export default class DetailsScreen extends Component {
     return (
       <View style={styles.container}>
         <View>
-          <Text>Add Receipt</Text>
+        <Text>My Receipt</Text>
         </View>
         <View style={styles.button}>
-          <Button onPress={() => this.props.navigation.navigate('Login')} title="Back" />
-        
-          <Button onPress={() => this.props.navigation.navigate('Add')} title="Add Receipt" />
-        
-          <Button onPress={() => this.props.navigation.navigate('Receipt')} title="My Receipt" />
-       
-          <Button onPress={() => this.props.navigation.navigate('Expenditure')} title="Expenditure" />
-
-          <Button onPress={() => this.props.navigation.navigate('About')} title="About" />
+        <Button onPress={() => this.props.navigation.navigate('Home')} title="Back" />
         </View>
       </View>
     );
