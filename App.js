@@ -14,7 +14,7 @@ import Homepage from "./screens/Homepage";
 import Signup from './screens/Signup';
 import AddReceipt from './screens/AddReceipt';
 import MyReceipt from './screens/MyReceipt';
-import Expenditure from 'screens/Expenditure';
+import Expenditure from './screens/Expenditure';
 import About from './screens/About';
 // import firebase from 'react-native-firebase';
 // import firebase from '@firebase/app';

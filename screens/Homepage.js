@@ -6,7 +6,7 @@ export default class DetailsScreen extends Component {
     return (
       <View style={styles.container}>
         <View>
-          <Text>Add Receipt</Text>
+          <Text>Home</Text>
         </View>
         <View style={styles.button}>
           <Button onPress={() => this.props.navigation.navigate('Login')} title="Back" />

@@ -22,13 +22,11 @@ export default class App extends Component {
   signUpButtonPress(){
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(() => {this.props.navigation.navigate('Home')} )
-    .catch((error)=>{
-      console.log("Auth failed " + error);
+  //   .catch((error)=>{
+  //     console.log("Auth failed " + error);
 
-   })
-    // .catch(error => (error));
-      
-      /*function(error) {
+  //  })
+    .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
       if (errorCode == 'auth/weak password') {
@@ -38,7 +36,7 @@ export default class App extends Component {
         Alert.alert(errorMessage);
       }
       console.log(error);
-    });*/
+    });
 
     // this.props.navigation.navigate('Home');
   }
