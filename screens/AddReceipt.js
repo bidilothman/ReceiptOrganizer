@@ -12,7 +12,7 @@ export default class DetailsScreen extends Component {
 
         <View style={styles.alignment}>
           <Text>Receipt :</Text>
-          <Button style={styles.button} title="Upload" />
+          <Button style={styles.button} onPress={() => this.props.navigation.navigate('Camera')} title="Upload" />
         </View>
 
         <View style={styles.alignment}>
