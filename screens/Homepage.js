@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   button: {
-    flexDirection: 'row'  
+    flexDirection: 'column'
   }
 });
