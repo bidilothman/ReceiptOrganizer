@@ -4,12 +4,12 @@ import '@firebase/storage';
 import '@firebase/auth';
 
  let config = {
-  apiKey: "AIzaSyAkiBUpwb-3EjZ8TC6OT4nNQ-52bsCwrjY",
-  authDomain: "react-native-7871f.firebaseapp.com",
-  databaseURL: "https://react-native-7871f.firebaseio.com",
-  projectId: "react-native-7871f",
-  storageBucket: "react-native-7871f.appspot.com",
-  messagingSenderId: "823831857106"
+    apiKey: "AIzaSyA7CfVU1jwSN-K2myrs8L-NL42z6jeiaK0",
+    authDomain: "receipt-organizer-a2229.firebaseapp.com",
+    databaseURL: "https://receipt-organizer-a2229.firebaseio.com",
+    projectId: "receipt-organizer-a2229",
+    storageBucket: "receipt-organizer-a2229.appspot.com",
+    messagingSenderId: "153660925781"
   };
 
 //   firebase.initializeApp(config);

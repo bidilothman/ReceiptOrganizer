@@ -22,21 +22,21 @@ export default class App extends Component {
   signUpButtonPress(){
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(() => {this.props.navigation.navigate('Home')} )
-  //   .catch((error)=>{
-  //     console.log("Auth failed " + error);
+    .catch((error)=>{
+      console.log("Auth failed " + error);
 
-  //  })
-    .catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      if (errorCode == 'auth/weak password') {
-        Alert.alert('The password is too weak');
-      }
-      else {
-        Alert.alert(errorMessage);
-      }
-      console.log(error);
-    });
+   })
+    // .catch((error) => {
+    //   var errorCode = error.code;
+    //   var errorMessage = error.message;
+    //   if (errorCode == 'auth/weak password') {
+    //     Alert.alert('The password is too weak');
+    //   }
+    //   else {
+    //     Alert.alert(errorMessage);
+    //   }
+    //   console.log(error);
+    // });
 
     // this.props.navigation.navigate('Home');
   }
@@ -52,7 +52,7 @@ export default class App extends Component {
   render() {
     return (
         <Container style={styles.container}>
-            <Text style={styles.headerText}>Login</Text>
+            <Text style={styles.headerText}>SIGN UP</Text>
                 <Content>
                     <Form>
                         <Item style={styles.inputContainer}>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
     //   alignItems: 'center',
-      backgroundColor: '#00b5ec'
+      backgroundColor: '#ACAF48'
     },
     headerText: {
       marginTop: 40,
