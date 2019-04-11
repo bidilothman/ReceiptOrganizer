@@ -17,11 +17,11 @@ export default class DetailsScreen extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      loading: false,
-      dp: null,
       avatarSource: null,
       chosenDate: new Date(),
-      image_uri: null
+      image_uri: null,
+      description: null,
+      amount: 0
     };
     this.setDate.bind(this);
   }
@@ -54,9 +54,9 @@ export default class DetailsScreen extends Component {
         // You can also display the image using data:
         const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-        // this.setState({
-        //   avatarSource: source,
-        // });
+        this.setState({
+          avatarSource: source,
+        });
 
           const Blob = RNFetchBlob.polyfill.Blob
           const fs = RNFetchBlob.fs
@@ -174,68 +174,68 @@ export default class DetailsScreen extends Component {
 
   render() {
     return (
-      // <View style={styles.container}>
-      //   <View>
-      //     <Text style={{justifyContent: 'center'}}>Add Receipt</Text>
-      //   </View>
+      <View style={styles.container}>
+        <View>
+          <Text style={{justifyContent: 'center'}}>Add Receipt</Text>
+        </View>
 
-      //   <View style={styles.alignment}>
-      //     <Text>Receipt :</Text>
+        <View style={styles.alignment}>
+          <Text>Receipt :</Text>
           
-      //     {/* <Button style={styles.button} onPress={() => this.props.navigation.navigate('Camera')} title="Upload" /> */}
-      //   </View>
+          {/* <Button style={styles.button} onPress={() => this.props.navigation.navigate('Camera')} title="Upload" /> */}
+        </View>
 
-      //   <View>
-      //     <Image source={this.state.avatarSource} style={{width: 100, height: 100}} />
-      //   </View>
-      //   <Button style={{ flexDirection: 'column' }} onPress={() => this.onUploadPress()} title="Upload" />
+        <View>
+          <Image source={this.state.avatarSource} style={{width: 100, height: 100}} />
+        </View>
+        <Button style={{ flexDirection: 'column' }} onPress={() => this.onUploadPress()} title="Upload" />
 
-      //   <View style={styles.alignment}>
-      //     <Text>Description :</Text>
-      //     <Form>
-      //       <Textarea style={{ flexDirection: 'row' }} width={200} rowSpan={5} bordered placeholder="" />
-      //     </Form>
-      //   </View>
+        <View style={styles.alignment}>
+          <Text>Description :</Text>
+          <Form>
+            <Textarea style={{ flexDirection: 'row' }} width={200} rowSpan={5} bordered onChangeText={(description) => this.setState({description})} placeholder="" />
+          </Form>
+        </View>
 
-      //   <View style={styles.alignment}>
-      //     <DatePicker
-      //       defaultDate={new Date(2018, 4, 4)}
-      //       minimumDate={new Date(2018, 1, 1)}
-      //       maximumDate={new Date(2018, 12, 31)}
-      //       locale={"en"}
-      //       timeZoneOffsetInMinutes={undefined}
-      //       modalTransparent={false}
-      //       animationType={"fade"}
-      //       androidMode={"default"}
-      //       placeHolderText="Select date"
-      //       textStyle={{ color: "green" }}
-      //       placeHolderTextStyle={{ color: "#d3d3d3" }}
-      //       onDateChange={this.setDate}
-      //       disabled={false}
-      //     />
-      //     <Text>Date: {this.state.chosenDate.toString().substr(4, 12)}</Text>
-      //     {/* <Item>
-      //       <Input bordered placeholder="Date" />
-      //     </Item> */}
-      //   </View>
+        <View style={styles.alignment}>
+          <DatePicker
+            defaultDate={new Date(2018, 4, 4)}
+            minimumDate={new Date(2018, 1, 1)}
+            maximumDate={new Date(2018, 12, 31)}
+            locale={"en"}
+            timeZoneOffsetInMinutes={undefined}
+            modalTransparent={false}
+            animationType={"fade"}
+            androidMode={"default"}
+            placeHolderText="Select date"
+            textStyle={{ color: "green" }}
+            placeHolderTextStyle={{ color: "#d3d3d3" }}
+            onDateChange={this.setDate}
+            disabled={false}
+          />
+          <Text>Date: {this.state.chosenDate.toString().substr(4, 12)}</Text>
+          {/* <Item>
+            <Input bordered placeholder="Date" />
+          </Item> */}
+        </View>
 
-      //   <View style={styles.alignment}>
-      //     <Text>Amount :</Text>
-      //     <Form>
-      //       <Textarea width={50} rowSpan={1} bordered placeholder="RM 0.00" />
-      //     </Form>
-      //   </View>
+        <View style={styles.alignment}>
+          <Text>Amount :</Text>
+          <Form>
+            <Textarea width={50} rowSpan={1} bordered onChangeText={(amount) => this.setState({amount})} placeholder="RM 0.00" />
+          </Form>
+        </View>
         
-      //   <Button style={styles.button} onPress={() => this.uploadImage()} title="Add" />
+        <Button style={styles.button} onPress={() => this.props.navigate.navigation('Home')} title="Add" />
         
-      // </View>
-      <View style={styles.gallery}>
-      <Button style={{ flexDirection: 'column' }} onPress={() => this.onUploadPress()} title="Upload" />
-      {/* <CameraRollPicker selected={[]} maximum={1} callback={this.getSelectedImages} /> */}
-      <Text style={styles.welcome}>
-        Image Gallery
-      </Text>        
-    </View>
+      </View>
+    //   <View style={styles.gallery}>
+    //   <Button style={{ flexDirection: 'column' }} onPress={() => this.onUploadPress()} title="Upload" />
+    //   {/* <CameraRollPicker selected={[]} maximum={1} callback={this.getSelectedImages} /> */}
+    //   <Text style={styles.welcome}>
+    //     Image Gallery
+    //   </Text>        
+    // </View>
     );
   }
 }

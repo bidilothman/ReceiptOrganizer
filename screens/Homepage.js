@@ -40,15 +40,15 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {Container, Header, Content} from 'native-base';
+import {Container, Header, Content, H1} from 'native-base';
 
 export default class DetailsScreen extends Component {
   render() {
     return (
-          <Container>
-            <Header>
+          <Container style={styles.container}>
+            <H1>
             <Text style={styles.header}>HOME SCREEN</Text>
-            </Header>
+            </H1>
         
           <Content>
           <View>
@@ -57,19 +57,19 @@ export default class DetailsScreen extends Component {
           <Text style={styles.info}>Receipt and Bill Organizer</Text>
           </View>  
 
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer1} onPress={() => this.props.navigation.navigate('Add')}>
           <Text style={styles.Text}> Snap Receipt</Text>  
           </TouchableOpacity> 
 
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer2} onPress={() => this.props.navigation.navigate('Receipt')}>
           <Text style={styles.Text}> My Receipt</Text>  
           </TouchableOpacity> 
 
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer1} onPress={() => this.props.navigation.navigate('Expenditure')}>
           <Text style={styles.Text}> My Expenditure</Text>  
           </TouchableOpacity> 
 
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer2} onPress={() => this.props.navigation.navigate('About')}>
           <Text style={styles.Text}> About Us</Text>  
           </TouchableOpacity> 
         </View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#ACAF48',
   },
   header: {
     fontSize: 30,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   }, 
   menuBox:{
-    backgroundColor: "#F5FCFF",
+    backgroundColor: '#ACAF48',
     width:430,
     height:150,
     alignItems: 'center',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize:27,
     color: "#696969",
   },
-  buttonContainer: {
+  buttonContainer1: {
     marginTop:25,
     marginLeft:80,
     height:45,
@@ -124,7 +124,19 @@ const styles = StyleSheet.create({
     marginBottom:20,
     width:250,
     borderRadius:30,
-    backgroundColor: "#841584",
+    backgroundColor: "#32B5D2",
+  },
+  buttonContainer2: {
+    marginTop:25,
+    marginLeft:80,
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:20,
+    width:250,
+    borderRadius:30,
+    backgroundColor: "#FB6E52",
   },
   Text:{
     fontSize: 17,

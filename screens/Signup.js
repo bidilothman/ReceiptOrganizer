@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Alert} from 'react-native';
+import {StyleSheet, Alert, TouchableOpacity, View} from 'react-native';
 import {Container, Text, Content, Form, Item, Input, Button} from 'native-base';
 // import firebase from 'react-native-firebase';
 import { db } from '../config/db';
@@ -20,10 +20,13 @@ export default class App extends Component {
   }
 
   signUpButtonPress(){
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    .then(() => {this.props.navigation.navigate('Home')} )
+    const email = this.state.email
+    const password = this.state.password
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {this.props.navigation.navigate('Login')} )
     .catch((error)=>{
       console.log("Auth failed " + error);
+      // Alert.alert(error)
 
    })
     // .catch((error) => {
@@ -41,13 +44,6 @@ export default class App extends Component {
     // this.props.navigation.navigate('Home');
   }
 
-  loginButtonPress(){
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    .then(() => {this.props.navigation.navigate('Home')})
-    .catch((error) => {
-      console.log("Auth failed " + error);
-    })
-  }
 
   render() {
     return (
@@ -62,14 +58,13 @@ export default class App extends Component {
                             <Input secureTextEntry={true} placeholder="Password" onChangeText={(password) => this.setState({password})} />
                         </Item>
 
-                        <Button style={styles.buttonStyle} onPress={this.signUpButtonPress()} >
-                            <Text>Sign Up</Text>
-                        </Button>
-
-                        <Button success style={styles.buttonStyle} onPress={this.loginButtonPress()} >
-                            <Text>Login</Text>
-                        </Button>
+                        
                     </Form>
+                    <View>
+                      <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.signUpButtonPress()}>
+                        <Text style={styles.loginText}>Signup</Text>
+                      </TouchableOpacity>
+                    </View>
                 </Content>
         </Container>
     );
@@ -77,31 +72,67 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-    //   alignItems: 'center',
-      backgroundColor: '#ACAF48'
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ACAF48'
+  },
+  headerText: {
+    marginTop: 40,
+    fontSize: 30,
+    fontWeight: 'bold',
+    alignSelf: 'center'
+  },
+  inputContainer:{
+    borderBottomColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
+    borderRadius:30,
+    borderBottomWidth: 1,
+    width:300,
+    height:45,
+    marginBottom:20,
+    flexDirection: 'row',
+    alignItems:'center',
+
+    shadowColor: "#808080",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    headerText: {
-      marginTop: 40,
-      fontSize: 30,
-      fontWeight: 'bold',
-      alignSelf: 'center'
-    },
-    inputContainer:{
-      borderBottomColor: '#F5FCFF',
-      backgroundColor: '#FFFFFF',
-      borderRadius:30,
-      borderBottomWidth: 1,
-      width:250,
-      height:45,
-      marginBottom:20,
-      flexDirection: 'row',
-      alignItems:'center',
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
     },
     buttonStyle: {
       marginTop: 10,
       alignSelf: 'center'
+    },
+    buttonContainer: {
+      height:45,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom:20,
+      width:300,
+      borderRadius:30,
+      backgroundColor:'transparent'
+    },
+    loginButton: {
+      backgroundColor: "#00b5ec",
+  
+      shadowColor: "#808080",
+      shadowOffset: {
+        width: 0,
+        height: 9,
+      },
+      shadowOpacity: 0.50,
+      shadowRadius: 12.35,
+  
+      elevation: 19,
+    },
+    loginText: {
+      color: 'white',
     }
   });

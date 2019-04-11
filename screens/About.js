@@ -83,7 +83,7 @@ export default class AboutUs extends Component {
             </CardItem>  
           </Card>
 
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Home')}>
           <Text style={styles.Text}> Back</Text>  
           </TouchableOpacity> 
 

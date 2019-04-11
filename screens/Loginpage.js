@@ -102,11 +102,13 @@ import {
   Image,
   Alert
 } from 'react-native';
+import firebase from '@firebase/app';
+import '@firebase/auth';
 
 export default class Login extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     state = {
       email   : '',
       password: '',
@@ -115,6 +117,16 @@ export default class Login extends Component {
 
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed "+viewId);
+  }
+
+  loginButtonPress(){
+    const newEmail = this.state.email
+    const newPassword = this.state.password
+    firebase.auth().signInWithEmailAndPassword(newEmail, newPassword)
+    .then(() => {this.props.navigation.navigate('Home')})
+    .catch((error) => {
+      console.log("Auth failed " + error);
+    })
   }
 
   render() {
@@ -144,7 +156,7 @@ export default class Login extends Component {
             <Text style={styles.btnText}>Forgot your password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('login')}>
+        <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.loginButtonPress()}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
 
