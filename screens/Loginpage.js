@@ -148,7 +148,7 @@ export default class Login extends Component {
         </TouchableOpacity>
 
 
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Signup')}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Home')}>
             <Text style={styles.btnText}>Register</Text>
         </TouchableOpacity>
       </View>
