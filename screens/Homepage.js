@@ -42,7 +42,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Container, Header, Content} from 'native-base';
 
-export default class HomePage extends Component {
+export default class DetailsScreen extends Component {
   render() {
     return (
           <Container>
