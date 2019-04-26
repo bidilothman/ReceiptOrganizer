@@ -1,16 +1,20 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Button, Image, Alert } from "react-native";
+import { View, Text, StyleSheet, Button, Image, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { Form, Textarea, Item, Input, DatePicker } from 'native-base';
 import ImagePicker from "react-native-image-picker";
 import db from "../config/db";
 import firebase from '@firebase/app';
 import '@firebase/storage';
+import '@firebase/database';
+import '@firebase/auth';
 import RNFetchBlob from 'react-native-fetch-blob';
 
-// const Blob = RNFetchBlob.polyfill.Blob
-// const fs = RNFetchBlob.fs
-// window.XMLHttp = RNFetchBlob.polyfill.XMLHttpRequest
-// window.Blob=Blob
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob=Blob
+
+imageRef = null
 
 export default class DetailsScreen extends Component {
 
@@ -21,7 +25,10 @@ export default class DetailsScreen extends Component {
       chosenDate: new Date(),
       image_uri: null,
       description: null,
-      amount: 0
+      title: null,
+      amount: 0,
+      type: null,
+      url: null
     };
     this.setDate.bind(this);
   }
@@ -49,44 +56,45 @@ export default class DetailsScreen extends Component {
         console.log('ImagePicker Error: ', response.error);
       }
       else {
-        // const source = { uri: response.uri };
+        const source = { uri: response.uri };
 
         // You can also display the image using data:
-        const source = { uri: 'data:image/jpeg;base64,' + response.data };
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
         this.setState({
           avatarSource: source,
         });
 
-          const Blob = RNFetchBlob.polyfill.Blob
-          const fs = RNFetchBlob.fs
-          window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-          window.Blob = Blob
+          
 
-          let uploadBlob = null
-          const imageRef = firebase.storage().ref('images').child("test.jpg")
-          let mime = 'image/jpg'
-          fs.readFile(source, 'base64')
-            .then((data) => {
-              return Blob.build(data, { type: `${mime};BASE64` })
-          })
-          .then((blob) => {
-              uploadBlob = blob
-              return imageRef.put(blob, { contentType: mime })
-            })
-            .then(() => {
-              uploadBlob.close()
-              return imageRef.getDownloadURL()
-            })
-            .then((url) => {
-              // URL of the image uploaded on Firebase storage
-              console.log(url);
+          this.uploadImage(response.uri)
+
+          // this.storeReference()
+
+          // let uploadBlob = null
+          // const imageRef = firebase.storage().ref('images').child("test.jpg")
+          // let mime = 'image/jpg'
+          // fs.readFile(source, 'base64')
+          //   .then((data) => {
+          //     return Blob.build(data, { type: `${mime};BASE64` })
+          // })
+          // .then((blob) => {
+          //     uploadBlob = blob
+          //     return imageRef.put(blob, { contentType: mime })
+          //   })
+          //   .then(() => {
+          //     uploadBlob.close()
+          //     return imageRef.getDownloadURL()
+          //   })
+          //   .then((url) => {
+          //     // URL of the image uploaded on Firebase storage
+          //     console.log(url);
               
-            })
-            .catch((error) => {
-              console.log(error);
+          //   })
+          //   .catch((error) => {
+          //     console.log(error);
       
-            })  
+          //   })  
       
 
         // this.getSelectedImages(this.state.avatarSource, this.state.avatarSource);
@@ -100,33 +108,51 @@ export default class DetailsScreen extends Component {
     });
   }
 
-  // uploadImage(uri, mime = 'application/octet-stream') {
-  //   return new Promise((resolve, reject) => {
-  //     const uploadUri = Platform.OS === 'android' ? uri.replace('file://', '') : uri
-  //     let uploadBlob = null
+  uploadImage(uri, mime = 'image/jpg') {
+    return new Promise((resolve, reject) => {
+      // const uploadUri = Platform.OS === 'android' ? uri.replace('file://', '') : uri
+      let uploadBlob = null
 
-  //     const imageRef = firebase.storage().ref('images').child('image_001')
+      imageName = this.state.title
 
-  //     fs.readFile(uploadUri, 'base64')
-  //       .then((data) => {
-  //         return Blob.build(data, { type: `${mime};BASE64` })
-  //       })
-  //       .then((blob) => {
-  //         uploadBlob = blob
-  //         return imageRef.put(blob, { contentType: mime })
-  //       })
-  //       .then(() => {
-  //         uploadBlob.close()
-  //         return imageRef.getDownloadURL()
-  //       })
-  //       .then((url) => {
-  //         resolve(url)
-  //       })
-  //       .catch((error) => {
-  //         reject(error)
-  //     })
-  //   })
-  // }
+      imageRef = firebase.storage().ref('images').child(`${imageName}.jpg`)
+
+      fs.readFile(uri, 'base64')
+        .then((data) => {
+          return Blob.build(data, { type: `${mime};BASE64` })
+        })
+        .then((blob) => {
+          uploadBlob = blob
+          return imageRef.put(blob, { contentType: mime })
+        })
+        .then(() => {
+          uploadBlob.close()
+          return imageRef.getDownloadURL()
+        })
+        .then((url) => {
+          resolve(url)
+          this.state.url = imageRef.getDownloadURL()
+          this.storeReference(this.state.url)
+        })
+        .catch((error) => {
+          reject(error)
+      })
+    })
+  }
+
+  storeReference = (url) => {
+    // Alert.alert('AKU MARAHHH!!!')
+
+  //   imageName = this.state.title
+  //   imageRef = firebase.storage().ref('images').child(`${imageName}.jpg`)
+  //   // currentUser = firebase.auth().currentUser
+    firebase.database().ref('/receipt').child('images').set({
+      // type: 'image',
+      url: url
+  })  
+  }
+
+  
 
   // uploadImage = async (uri, imageName) => {
   //   const response = await fetch(uri);
@@ -174,21 +200,27 @@ export default class DetailsScreen extends Component {
 
   render() {
     return (
+      <ScrollView>
       <View style={styles.container}>
-        <View>
-          <Text style={{justifyContent: 'center'}}>Add Receipt</Text>
+          <Text style={styles.headerText}>Add Receipt</Text>
+
+        <View style={styles.alignment}>
+          <Text>Title : </Text>
+          <Form>
+            <Textarea style={{ flexDirection: 'row' }} width={100} rowSpan={2} bordered onChangeText={(title) => this.setState({title})} placeholder="" />
+          </Form>
         </View>
 
         <View style={styles.alignment}>
           <Text>Receipt :</Text>
-          
+          <Button style={{flexDirection: 'row'}} onPress={() => this.onUploadPress()} title="Upload" />
           {/* <Button style={styles.button} onPress={() => this.props.navigation.navigate('Camera')} title="Upload" /> */}
         </View>
 
         <View>
-          <Image source={this.state.avatarSource} style={{width: 100, height: 100}} />
+          <Image style={{flexDirection: 'row'}} source={this.state.avatarSource} style={{width: 100, height: 100}} />
+          
         </View>
-        <Button style={{ flexDirection: 'column' }} onPress={() => this.onUploadPress()} title="Upload" />
 
         <View style={styles.alignment}>
           <Text>Description :</Text>
@@ -196,6 +228,8 @@ export default class DetailsScreen extends Component {
             <Textarea style={{ flexDirection: 'row' }} width={200} rowSpan={5} bordered onChangeText={(description) => this.setState({description})} placeholder="" />
           </Form>
         </View>
+
+        
 
         <View style={styles.alignment}>
           <DatePicker
@@ -222,13 +256,19 @@ export default class DetailsScreen extends Component {
         <View style={styles.alignment}>
           <Text>Amount :</Text>
           <Form>
-            <Textarea width={50} rowSpan={1} bordered onChangeText={(amount) => this.setState({amount})} placeholder="RM 0.00" />
+            <Textarea width={100} rowSpan={2} bordered onChangeText={(amount) => this.setState({amount})} placeholder="RM 0.00" />
           </Form>
         </View>
+
+        <TouchableOpacity style={styles.buttonContainer2} onPress={() => this.props.navigation.navigate('Home')}>
+          <Text style={styles.Text}> Add </Text>  
+        </TouchableOpacity>
         
-        <Button style={styles.button} onPress={() => this.props.navigate.navigation('Home')} title="Add" />
+        
+        {/* <Button style={styles.button} onPress={() => this.props.navigation.navigate('Home')} title="Add" /> */}
         
       </View>
+      </ScrollView>
     //   <View style={styles.gallery}>
     //   <Button style={{ flexDirection: 'column' }} onPress={() => this.onUploadPress()} title="Upload" />
     //   {/* <CameraRollPicker selected={[]} maximum={1} callback={this.getSelectedImages} /> */}
@@ -246,14 +286,35 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     // justifyContent: '',
     // alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#ACAF48',
     textAlignVertical: 'top'
+  },
+  headerText: {
+    marginTop: 40,
+    fontSize: 30,
+    fontWeight: 'bold',
+    alignSelf: 'center'
   },
   button: {
     flexDirection: 'column'  
   },
+  buttonContainer2: {
+    marginTop:25,
+    marginLeft:80,
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:20,
+    width:250,
+    borderRadius:30,
+    backgroundColor: "#32B5D2",
+  },
   alignment: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignSelf: 'auto',
+    marginTop: 20,
+    marginLeft: 20
   },
   uploadAvatar: {
     flexDirection: 'row'

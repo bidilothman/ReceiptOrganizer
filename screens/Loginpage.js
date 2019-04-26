@@ -92,16 +92,7 @@
 //   });
 
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  Image,
-  Alert
-} from 'react-native';
+import {StyleSheet ,Text, View, TextInput, Button, TouchableOpacity, Image, Alert, ScrollView} from 'react-native';
 import firebase from '@firebase/app';
 import '@firebase/auth';
 
@@ -131,6 +122,7 @@ export default class Login extends Component {
 
   render() {
     return (
+      <ScrollView>
       <View style={styles.container}>
       <Image source={ require('../Media/resit.png') } />
         {/* <Image style={styles.bgImage} source={{ uri: "https://lorempixel.com/900/1400/nightlife/2/" }}/> */}
@@ -152,7 +144,7 @@ export default class Login extends Component {
           <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/nolan/40/000000/key.png'}}/>
         </View>
 
-        <TouchableOpacity style={styles.btnForgotPassword} onPress={() => this.onClickListener('restore_password')}>
+        <TouchableOpacity style={styles.btnForgotPassword} onPress={() => this.props.navigation.navigate('Reset')}>
             <Text style={styles.btnText}>Forgot your password?</Text>
         </TouchableOpacity>
 
@@ -165,6 +157,7 @@ export default class Login extends Component {
             <Text style={styles.btnText}>Register</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     );
   }
 }

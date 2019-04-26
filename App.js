@@ -17,6 +17,7 @@ import MyReceipt from './screens/MyReceipt';
 import Expenditure from './screens/Expenditure';
 import About from './screens/About';
 import Camera from './screens/Camera';
+import ResetPassword from './screens/ResetPassword';
 // import firebase from 'react-native-firebase';
 // import firebase from '@firebase/app';
 // import '@firebase/database';
@@ -32,7 +33,8 @@ const RootStack = createStackNavigator(
     Receipt: MyReceipt,
     Expenditure: Expenditure,
     About: About,
-    Camera: Camera
+    Camera: Camera,
+    Reset: ResetPassword
   },
   {
     initialRouteName: 'Login'
