@@ -9,6 +9,8 @@ import '@firebase/database';
 import '@firebase/auth';
 import RNFetchBlob from 'react-native-fetch-blob';
 
+let studentsRef = db.ref('/students');
+
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
 window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
@@ -31,6 +33,28 @@ export default class DetailsScreen extends Component {
       url: null
     };
     this.setDate.bind(this);
+  }
+
+  componentDidMount() {
+    let query = studentsRef.orderByChild("images")
+      query.once('value', (snapshot) => {
+      let data = snapshot.val();
+          if(data){
+            let firebaseData = Object.values(data);
+            this.setState({receipt: firebaseData},()=>{
+              this.state.students.map((element) => {
+                this.setState({
+                  url: element.url
+                  // name: element.name,
+                  // matricno: element.matricno,
+                  // major: element.major,
+                  // year: element.year,
+                  // status: element.status
+                });
+              });
+            });
+          }
+     });
   }
 
   setDate(newDate){
@@ -262,6 +286,8 @@ export default class DetailsScreen extends Component {
             <Textarea width={100} rowSpan={2} bordered onChangeText={(amount) => this.setState({amount})} placeholder="RM 0.00" />
           </Form>
         </View>
+
+        <Image source={this.state.url} />
 
         <TouchableOpacity style={styles.buttonContainer2} onPress={() => this.props.navigation.navigate('Home')}>
           <Text style={styles.Text}> Add </Text>  
