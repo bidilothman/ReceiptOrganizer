@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class ImageComponent extends Component {
 
   static propTypes = {
-      items: PropTypes.array.isRequired
+      receipt: PropTypes.array.isRequired
   };
 
   render() {
     return (
-      <View style={styles.itemsList}>
-        {this.props.items.map((data, index) => {
+      <View style={styles.showImage}>
+        {this.props.receipt.map((data, index) => {
             return (
                 <View key={index}>
-                    <Text style={styles.itemtext}>{data.url}</Text>
+                  <Image>{data.url}</Image>
+                    {/* <Text style={styles.itemtext}>{data.url}</Text> */}
                 </View>
             )
         })}
@@ -24,7 +25,7 @@ export default class ImageComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-    itemsList: {
+    showImage: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'space-around',

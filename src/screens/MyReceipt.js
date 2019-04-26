@@ -35,7 +35,8 @@ export default class DetailsScreen extends Component {
         <Text>My Receipt</Text>
         </View>
         <View>
-        <ImageComponent receipt={this.state.receipt} />
+          <ImageComponent receipt={this.state.receipt} />
+          <Image>{this.props.receipt}</Image>
           {/* <Image source={{ uri: httpsReference }}/> */}
         </View>
         <View style={styles.button}>
