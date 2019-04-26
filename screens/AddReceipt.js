@@ -130,8 +130,11 @@ export default class DetailsScreen extends Component {
           return imageRef.getDownloadURL()
         })
         .then((url) => {
+          // Alert.alert(url)
           resolve(url)
-          this.state.url = imageRef.getDownloadURL()
+          this.setState({ url: url })
+          // Alert.alert(this.state.url)
+          // this.state.url = imageRef.getDownloadURL()
           this.storeReference(this.state.url)
         })
         .catch((error) => {
@@ -140,14 +143,14 @@ export default class DetailsScreen extends Component {
     })
   }
 
-  storeReference = (url) => {
+  storeReference(url) {
     // Alert.alert('AKU MARAHHH!!!')
 
   //   imageName = this.state.title
   //   imageRef = firebase.storage().ref('images').child(`${imageName}.jpg`)
   //   // currentUser = firebase.auth().currentUser
     firebase.database().ref('/receipt').child('images').set({
-      // type: 'image',
+    //   // type: 'image',
       url: url
   })  
   }
