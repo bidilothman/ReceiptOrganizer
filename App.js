@@ -9,15 +9,15 @@
 
 import React, {Component} from 'react';
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import Loginpage from "./screens/Loginpage";
-import Homepage from "./screens/Homepage";
-import Signup from './screens/Signup';
-import AddReceipt from './screens/AddReceipt';
-import MyReceipt from './screens/MyReceipt';
-import Expenditure from './screens/Expenditure';
-import About from './screens/About';
-import Camera from './screens/Camera';
-import ResetPassword from './screens/ResetPassword';
+import Loginpage from "./src/screens/Loginpage";
+import Homepage from "./src/screens/Homepage";
+import Signup from './src/screens/Signup';
+import AddReceipt from './src/screens/AddReceipt';
+import MyReceipt from './src/screens/MyReceipt';
+import Expenditure from './src/screens/Expenditure';
+import About from './src/screens/About';
+import Camera from './src/screens/Camera';
+import ResetPassword from './src/screens/ResetPassword';
 // import firebase from 'react-native-firebase';
 // import firebase from '@firebase/app';
 // import '@firebase/database';

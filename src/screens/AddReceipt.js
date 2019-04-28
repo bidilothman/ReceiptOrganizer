@@ -9,7 +9,7 @@ import '@firebase/database';
 import '@firebase/auth';
 import RNFetchBlob from 'react-native-fetch-blob';
 
-let studentsRef = db.ref('/students');
+// let studentsRef = db.ref('/receipt');
 
 const Blob = RNFetchBlob.polyfill.Blob
 const fs = RNFetchBlob.fs
@@ -17,12 +17,14 @@ window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
 window.Blob=Blob
 
 imageRef = null
+yameng = null
 
 export default class DetailsScreen extends Component {
 
   constructor (props) {
     super(props);
     this.state = {
+      receipt:[],
       avatarSource: null,
       chosenDate: new Date(),
       image_uri: null,
@@ -36,20 +38,15 @@ export default class DetailsScreen extends Component {
   }
 
   componentDidMount() {
-    let query = studentsRef.orderByChild("images")
+    let query = firebase.database().ref('/receipt').orderByChild("images")
       query.once('value', (snapshot) => {
       let data = snapshot.val();
           if(data){
             let firebaseData = Object.values(data);
             this.setState({receipt: firebaseData},()=>{
-              this.state.students.map((element) => {
+              this.state.receipt.map((element) => {
                 this.setState({
                   url: element.url
-                  // name: element.name,
-                  // matricno: element.matricno,
-                  // major: element.major,
-                  // year: element.year,
-                  // status: element.status
                 });
               });
             });
@@ -89,55 +86,19 @@ export default class DetailsScreen extends Component {
           avatarSource: source,
         });
 
-          
-
-          this.uploadImage(response.uri)
-
-          // this.storeReference()
-
-          // let uploadBlob = null
-          // const imageRef = firebase.storage().ref('images').child("test.jpg")
-          // let mime = 'image/jpg'
-          // fs.readFile(source, 'base64')
-          //   .then((data) => {
-          //     return Blob.build(data, { type: `${mime};BASE64` })
-          // })
-          // .then((blob) => {
-          //     uploadBlob = blob
-          //     return imageRef.put(blob, { contentType: mime })
-          //   })
-          //   .then(() => {
-          //     uploadBlob.close()
-          //     return imageRef.getDownloadURL()
-          //   })
-          //   .then((url) => {
-          //     // URL of the image uploaded on Firebase storage
-          //     console.log(url);
-              
-          //   })
-          //   .catch((error) => {
-          //     console.log(error);
-      
-          //   })  
-      
-
-        // this.getSelectedImages(this.state.avatarSource, this.state.avatarSource);
-          // .then(() => {
-          //   Alert.alert("Success");
-          // })
-          // .catch((error) => {
-          //   Alert.alert(error);
-          // })
+          yameng = response.uri
       }
     });
   }
 
   uploadImage(uri, mime = 'image/jpg') {
     return new Promise((resolve, reject) => {
-      // const uploadUri = Platform.OS === 'android' ? uri.replace('file://', '') : uri
       let uploadBlob = null
 
       imageName = this.state.title
+      desc = this.state.description
+      date = this.state.chosenDate
+      amt = this.state.amount
 
       imageRef = firebase.storage().ref('images').child(`${imageName}.jpg`)
 
@@ -156,10 +117,10 @@ export default class DetailsScreen extends Component {
         .then((url) => {
           // Alert.alert(url)
           resolve(url)
-          this.setState({ url: url })
+          this.setState({ url: url})
           // Alert.alert(this.state.url)
           // this.state.url = imageRef.getDownloadURL()
-          this.storeReference(this.state.url)
+          this.storeReference(this.state.url, imageName, desc, date, amt)
         })
         .catch((error) => {
           reject(error)
@@ -167,63 +128,19 @@ export default class DetailsScreen extends Component {
     })
   }
 
-  storeReference(url) {
-    // Alert.alert('AKU MARAHHH!!!')
-
-  //   imageName = this.state.title
-  //   imageRef = firebase.storage().ref('images').child(`${imageName}.jpg`)
-  //   // currentUser = firebase.auth().currentUser
-    firebase.database().ref('/receipt').child('images').set({
-    //   // type: 'image',
-      url: url
+  storeReference(url, title, description, date, amount) {
+    firebase.database().ref('/receipt').child(title).set({
+      url: url,
+      description: description,
+      date: date,
+      amount: amount
   })  
   }
 
-  
-
-  // uploadImage = async (uri, imageName) => {
-  //   const response = await fetch(uri);
-  //   const blob = response.blob();
-
-  //   var ref = firebase.storage().ref().child("images/" + imageName);
-  //   return ref.put(blob);
-  // }
-  // getSelectedImages = (selectedImages, currentImage) => {
-    
-  //   const image = currentImage.uri
-
-  //   const Blob = RNFetchBlob.polyfill.Blob
-  //   const fs = RNFetchBlob.fs
-  //   window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-  //   window.Blob = Blob
-
-   
-  //   let uploadBlob = null
-  //   const imageRef = firebase.storage().ref('images/').child("test.jpg")
-  //   let mime = 'image/jpg'
-  //   fs.readFile(image, 'base64')
-  //     .then((data) => {
-  //       return Blob.build(data, { type: `${mime};BASE64` })
-  //   })
-  //   .then((blob) => {
-  //       uploadBlob = blob
-  //       return imageRef.put(blob, { contentType: mime })
-  //     })
-  //     .then(() => {
-  //       uploadBlob.close()
-  //       return imageRef.getDownloadURL()
-  //     })
-  //     .then((url) => {
-  //       // URL of the image uploaded on Firebase storage
-  //       console.log(url);
-        
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-
-  //     })  
-
-  // }
+  onAddPress(url) {
+    this.uploadImage(url)
+    this.props.navigation.navigate('Home')
+  }
 
   render() {
     return (
@@ -260,9 +177,9 @@ export default class DetailsScreen extends Component {
 
         <View style={styles.alignment}>
           <DatePicker
-            defaultDate={new Date(2018, 4, 4)}
-            minimumDate={new Date(2018, 1, 1)}
-            maximumDate={new Date(2018, 12, 31)}
+            defaultDate={new Date(2019, 4, 4)}
+            minimumDate={new Date(2019, 1, 1)}
+            maximumDate={new Date(2019, 12, 31)}
             locale={"en"}
             timeZoneOffsetInMinutes={undefined}
             modalTransparent={false}
@@ -289,7 +206,7 @@ export default class DetailsScreen extends Component {
 
         <Image source={this.state.url} />
 
-        <TouchableOpacity style={styles.buttonContainer2} onPress={() => this.props.navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.buttonContainer2} onPress={() => this.onAddPress(yameng)}>
           <Text style={styles.Text}> Add </Text>  
         </TouchableOpacity>
         

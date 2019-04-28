@@ -14,7 +14,8 @@ export default class ImageComponent extends Component {
         {this.props.receipt.map((data, index) => {
             return (
                 <View key={index}>
-                  <Image>{data.url}</Image>
+                  <Image source={{ uri:data.url }} style={{width: 100, height: 100}} />
+                  {/* <Image>{data.url}</Image> */}
                     {/* <Text style={styles.itemtext}>{data.url}</Text> */}
                 </View>
             )
