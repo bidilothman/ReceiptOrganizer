@@ -1,48 +1,17 @@
-// import React, { Component } from "react";
-// import { View, Text, StyleSheet, Button } from "react-native";
-
-// export default class DetailsScreen extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <View>
-//         <Text>My Expenditure</Text>
-//         </View>
-//         <View style={styles.button}>
-//         <Button onPress={() => this.props.navigation.navigate('Home')} title="Back" />
-//         </View>
-//       </View>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexDirection: 'column',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//     textAlignVertical: 'top',
-//   },
-//   button: {
-//     flexDirection: 'row'  
-//   }
-// });
-
 import React, { Component } from "react";
-import { StyleSheet, Alert } from 'react-native';
-import { Container, Header, Title, Button, Icon, Left, Text, Body, Thumbnail, List, ListItem, Content, Item, Input, H1, Footer, FooterTab } from "native-base";
+import { StyleSheet, View, Alert } from 'react-native';
+import { Container, Header, Title, Button, Icon, Left, Text, Body, Thumbnail, List, ListItem, Content, Item, Input, H1, Footer, FooterTab, Form, Picker } from "native-base";
 import { Grid, Row} from "react-native-easy-grid";
 
-export default class Myexpenditure extends Component {
-  constructor(){
-    super();
+export default class PickerWithIcon extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
+      selected: "daily",
       income: 0,
       total: 0,
       expense: 0
-    }
+    };
   }
 
   calculateIncome = () => {
@@ -50,6 +19,12 @@ export default class Myexpenditure extends Component {
     this.setState({total: totalIncome}, () => {
         Alert.alert('You have successfully add your income!');
       
+    });
+  }
+  
+  onValueChange(value) {
+    this.setState({
+      selected: value
     });
   }
 
@@ -68,7 +43,7 @@ export default class Myexpenditure extends Component {
         </Header>
 
         <Content>
-          <Grid>
+        <Grid>
             <Row style={{backgroundColor: '#28589c', height: 60}}>
             <List>
               <ListItem avatar>
@@ -98,17 +73,31 @@ export default class Myexpenditure extends Component {
               </Body>
             </Row>
           </Grid>
-          </Content>
 
-          <Footer>
+          <Form>
+            <Picker
+              mode="dropdown"
+              style={{ width: undefined }}
+              selectedValue={this.state.selected}
+              onValueChange={this.onValueChange.bind(this)}
+            >
+              <Picker.Item label="Daily" value="daily" />
+              <Picker.Item label="Weekly" value="weekly" />
+              <Picker.Item label="Monthly" value="monthly" />
+            </Picker>
+          </Form>
+
+            <Text> Your {this.state.selected} expenditure are :</Text>
+          
+        </Content>
+
+        <Footer>
             <FooterTab>
-              <Button vertical>
-                <Icon name="apps" />
-                <Text>Summary</Text>
+              <Button vertical onPress={() => this.props.navigation.navigate('Expense')}>
+                <Text style={{fontSize: 13, color: "white"}}>Summary</Text>
               </Button>
-              <Button vertical>
-                <Icon name="camera" />
-                <Text>. . . </Text>
+              <Button vertical onPress={() => this.props.navigation.navigate('Tabs')}>
+                <Text style={{fontSize: 13, color: "white"}}>Expense Report </Text>
               </Button>
             </FooterTab>
           </Footer>
